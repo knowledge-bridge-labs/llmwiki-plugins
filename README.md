@@ -29,6 +29,13 @@ Add `llmwiki-agent-bridge` only when you want one endpoint across multiple
 sources or model-backed answer synthesis. The marketplace wording and skills
 avoid treating Agent Bridge as the default runtime.
 
+When a running source is discovered, use the base `url` from
+`llmwiki-serve ls --json`, remove any trailing slash, and append `/mcp/stream`
+for the direct MCP Streamable HTTP endpoint. Do not rebuild the URL from
+separate host and port fields. If a source reports a wildcard bind host such as
+`0.0.0.0`, `::`, or `[::]`, confirm a reachable client host with the user before
+writing any client configuration.
+
 The plugin reuses the existing onboarding package:
 
 ```bash
@@ -96,6 +103,22 @@ codex plugin add llmwiki-bridge@knowledge-bridge-labs
 After installation, start a new Codex thread so newly installed skills are
 loaded in context.
 
+Codex can use the plugin through normal natural language:
+
+```text
+Set up LLMWiki Bridge for this repo.
+Check my LLMWiki source status.
+Run an LLMWiki Bridge doctor check.
+```
+
+For explicit skill invocation, name the installed plugin skill:
+
+```text
+Use the llmwiki-bridge:setup skill to connect ./wiki.
+Use the llmwiki-bridge:status skill and do not start any processes.
+Use the llmwiki-bridge:doctor skill for a read-only readiness check.
+```
+
 ## Safety Defaults
 
 - No wiki files are modified, compiled, normalized, or uploaded.
@@ -105,6 +128,9 @@ loaded in context.
 - Direct local serving binds to `127.0.0.1` by default.
 - Non-loopback or remote URLs require explicit user approval before probing or
   configuration.
+- Remote probes and later search or query text are sent to the remote operator.
+  Use HTTPS by default. Use plain HTTP only on a private or otherwise trusted
+  network after explicit approval.
 - Tokens, private endpoints, local paths, logs, and credentials must not be
   committed to this repository.
 - The plugin asks before package installation, process start, and client
@@ -119,6 +145,8 @@ loaded in context.
 | `plugins/llmwiki-bridge/.claude-plugin/plugin.json` | Claude Code plugin manifest. |
 | `plugins/llmwiki-bridge/.codex-plugin/plugin.json` | Codex plugin manifest. |
 | `plugins/llmwiki-bridge/skills/` | Shared skills loaded by both hosts. |
+| `PRIVACY.md` | Privacy policy URL used by Codex listing metadata. |
+| `TERMS.md` | Terms of service URL used by Codex listing metadata. |
 | `scripts/validate_repo.py` | JSON, frontmatter, structure, and safety validation. |
 | `scripts/run_optional_validators.py` | Local optional official validator runner. |
 | `specs/plugin-onboarding/` | MVP requirements, plan, tasks, and test contract. |
@@ -140,3 +168,8 @@ py -3 scripts/run_optional_validators.py
 
 The optional validator script skips unavailable tools. It does not install
 Claude Code, Codex, Node, Python packages, or any LLMWiki runtime.
+
+Release host gates run separately on tags and manual dispatch. They install the
+current Claude Code and Codex CLIs, require Claude root and plugin validation,
+and smoke-test Codex local marketplace add/install/list in an isolated
+`CODEX_HOME`.

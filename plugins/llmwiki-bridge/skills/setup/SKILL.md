@@ -22,6 +22,9 @@ Start every setup by giving this short explanation in your own words:
   explicit approval.
 - Local source servers bind to `127.0.0.1` by default. `llmwiki-serve` may write
   local I/O debug logs unless the user chooses `--io-log off`.
+- Remote or non-loopback endpoints should use HTTPS by default. Plain HTTP is
+  appropriate only on a private or otherwise trusted network after explicit
+  approval.
 
 ## Required Flow
 
@@ -71,7 +74,8 @@ Ask the user to choose one of these bounded setup paths:
 - Existing running source: inspect `llmwiki-serve ls --json` and use the
   reported URL without restarting it.
 - Remote source: require an explicit URL from the user and explicit approval
-  before probing or saving it.
+  before probing or saving it. Explain that probes and later search text or
+  query text are sent to that remote operator.
 
 Do not run home-wide discovery unless the user explicitly asks for it after the
 privacy notice.
@@ -85,11 +89,16 @@ is already running, use the URL reported by:
 llmwiki-serve ls --json
 ```
 
-The direct MCP Streamable HTTP endpoint has this shape:
+Build the direct MCP Streamable HTTP endpoint from the `url` field reported by
+`llmwiki-serve ls --json`:
 
-```text
-http://127.0.0.1:<port>/mcp/stream
-```
+- Parse the reported base URL instead of reconstructing host and port from
+  separate fields.
+- Remove any trailing slash from the base URL and append `/mcp/stream`.
+- Do not pass wildcard bind hosts such as `0.0.0.0`, `::`, or `[::]` to a
+  client. If a reported URL uses a wildcard host, ask the user to confirm the
+  reachable host: usually `127.0.0.1` or `localhost` for same-machine use, or
+  an approved LAN hostname, LAN IP, or HTTPS URL for remote use.
 
 Before writing host configuration, inspect the host's current documented MCP
 configuration command or UI. Do not invent a Claude Code or Codex MCP command.
@@ -140,4 +149,6 @@ The setup is complete when you can report:
 - the source health result
 - the direct MCP Streamable HTTP URL, or the approved bridge URL when bridge
   escalation was selected
+- for remote or non-loopback URLs, whether HTTPS is used or plain HTTP was
+  explicitly approved for a trusted network
 - a first cited context result, smoke result, or the specific blocking check

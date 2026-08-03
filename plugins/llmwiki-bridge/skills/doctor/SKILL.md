@@ -13,6 +13,8 @@ processes, probing non-loopback URLs, or writing configuration.
 Do not run home-wide discovery from doctor; route the user to setup and ask for
 explicit approval before any home scan.
 Do not modify, normalize, compile, or upload wiki files while running doctor.
+Remote or non-loopback endpoints should use HTTPS by default. Plain HTTP should
+be limited to private or otherwise trusted networks after explicit approval.
 
 ## Checks
 
@@ -39,8 +41,9 @@ npx llmwiki-bridge-start@latest doctor --bridge http://127.0.0.1:8788
 ```
 
 For a remote or non-loopback URL, first explain that the check contacts that
-network address and may expose the user's IP address to the remote operator.
-Proceed only after explicit approval.
+network address, may expose the user's IP address, and that later search text
+or query text will be sent to the remote operator if the user connects the
+agent to that endpoint. Proceed only after explicit approval.
 
 ## Diagnosis Rules
 
@@ -49,7 +52,11 @@ Proceed only after explicit approval.
 - No healthy local source: ask for a bounded source path, then use the setup
   skill flow.
 - Existing healthy source: do not restart it; report its direct MCP Streamable
-  HTTP URL.
+  HTTP URL by taking the `llmwiki-serve ls --json` `url` value, removing any
+  trailing slash, and appending `/mcp/stream`. Do not reconstruct it from
+  separate host and port fields.
+- Wildcard bind host in a reported URL: do not pass `0.0.0.0`, `::`, or `[::]`
+  to a client; ask the user to confirm the reachable client host.
 - Multiple sources or answer synthesis needed: suggest `llmwiki-agent-bridge`
   as an optional escalation.
 - Runtime failures belong to the runtime or Agent Bridge layer, not this

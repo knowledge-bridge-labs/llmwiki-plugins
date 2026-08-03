@@ -26,7 +26,8 @@ def main() -> int:
 
     claude = shutil.which("claude")
     if claude:
-        ran += 1
+        ran += 2
+        failures += 1 if run([claude, "plugin", "validate", str(ROOT)]) else 0
         failures += 1 if run([claude, "plugin", "validate", str(PLUGIN)]) else 0
     else:
         print("SKIP: claude CLI not found; skipped Claude Code validator.")

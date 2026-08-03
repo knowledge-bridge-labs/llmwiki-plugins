@@ -24,7 +24,10 @@ existing package boundaries and create additional security review surface.
 ## Decision
 
 The public plugin ID is `llmwiki-bridge` and the display name is
-`LLMWiki Bridge`.
+`LLMWiki Bridge` where the host manifest supports display metadata. Codex keeps
+`interface.displayName: LLMWiki Bridge`. The Claude Code plugin manifest stays
+minimal and omits optional `displayName` and fixed `version` fields so older
+Claude Code validators and git-SHA-based marketplace updates keep working.
 
 The MVP plugin is skills-first:
 
@@ -36,9 +39,18 @@ The MVP plugin is skills-first:
 - It keeps `llmwiki-serve` direct source setup as the default for one source.
 - It suggests `llmwiki-agent-bridge` only for multi-source or runtime-backed
   synthesis.
+- It derives direct MCP Streamable HTTP endpoints from the base `url` reported
+  by `llmwiki-serve ls --json` and appends `/mcp/stream`; it does not
+  reconstruct client URLs from separate host and port fields.
+- It treats wildcard bind hosts such as `0.0.0.0`, `::`, and `[::]` as bind
+  addresses that need a user-confirmed reachable client host.
 
 Every skill must keep explicit approval gates before package installation,
 process start, or configuration writes.
+Remote or non-loopback endpoints require disclosure that probes and later query
+text are sent to the remote operator. HTTPS is the default recommendation;
+plain HTTP is reserved for private or otherwise trusted networks after explicit
+approval.
 
 ## Consequences
 
@@ -50,6 +62,8 @@ process start, or configuration writes.
 - The plugin remains robust when host MCP registration commands differ because
   it can return verified endpoint URLs instead of inventing host-specific
   commands.
+- Claude Code user-facing display copy must come from marketplace/docs listing
+  context until older validators accept richer plugin manifest fields.
 
 ## Follow-Ups
 
@@ -66,4 +80,3 @@ process start, or configuration writes.
 - Tests: `specs/plugin-onboarding/tests.md`
 - Claude Code plugin docs: `https://code.claude.com/docs/en/plugins`
 - Claude Code marketplace docs: `https://code.claude.com/docs/en/plugin-marketplaces`
-

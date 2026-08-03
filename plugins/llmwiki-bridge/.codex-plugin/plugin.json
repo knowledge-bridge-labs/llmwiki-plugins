@@ -30,8 +30,8 @@
       "Read"
     ],
     "websiteURL": "https://knowledge-bridge-labs.github.io/llmwiki-docs/",
-    "privacyPolicyURL": "https://github.com/knowledge-bridge-labs/llmwiki-plugins/security/policy",
-    "termsOfServiceURL": "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/LICENSE",
+    "privacyPolicyURL": "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/TERMS.md",
     "defaultPrompt": [
       "Set up LLMWiki Bridge for this repo.",
       "Check my LLMWiki source status.",

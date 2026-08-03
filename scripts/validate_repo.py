@@ -19,6 +19,8 @@ REQUIRED_FILES = [
     "CONTRIBUTING.md",
     "LICENSE",
     "SECURITY.md",
+    "PRIVACY.md",
+    "TERMS.md",
     "CHANGELOG.md",
     "AGENTS.md",
     ".claude-plugin/marketplace.json",
@@ -72,9 +74,8 @@ def assert_claude_marketplace() -> None:
         fail("Claude marketplace plugin name must be llmwiki-bridge")
     if entry.get("source") != "./plugins/llmwiki-bridge":
         fail("Claude marketplace source must be ./plugins/llmwiki-bridge")
-    description = entry.get("description", "")
-    if "llmwiki-agent-bridge" not in description or "only" not in description:
-        fail("Claude marketplace must distinguish Agent Bridge as optional")
+    if "description" in data or "description" in entry:
+        fail("Claude marketplace must omit optional description fields for 2.1.117 compatibility")
 
 
 def assert_codex_marketplace() -> None:
@@ -119,9 +120,17 @@ def assert_plugin_manifests() -> None:
         fail("Codex manifest must include interface metadata")
     if interface.get("displayName") != "LLMWiki Bridge":
         fail("Codex displayName must be LLMWiki Bridge")
+    if interface.get("privacyPolicyURL") != "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/PRIVACY.md":
+        fail("Codex privacyPolicyURL must point to public PRIVACY.md")
+    if interface.get("termsOfServiceURL") != "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/TERMS.md":
+        fail("Codex termsOfServiceURL must point to public TERMS.md")
     prompts = interface.get("defaultPrompt")
     if not isinstance(prompts, list) or not 1 <= len(prompts) <= 3:
         fail("Codex defaultPrompt must be a list of one to three prompts")
+    if "version" in claude:
+        fail("Claude manifest must omit fixed version for git-SHA marketplace updates")
+    if "displayName" in claude:
+        fail("Claude manifest must omit displayName for 2.1.117 compatibility")
 
 
 def parse_frontmatter(path: Path) -> dict[str, str]:
@@ -163,9 +172,13 @@ def assert_skills() -> None:
             "upload",
             "llmwiki-serve ls --json",
             "llmwiki-agent-bridge",
+            "/mcp/stream",
         ]
         if name == "setup":
             required_terms.append("setup")
+            required_terms.extend(["query text", "https", "0.0.0.0"])
+        if name == "doctor":
+            required_terms.extend(["query text", "https", "0.0.0.0"])
         for term in required_terms:
             if term not in text:
                 fail(f"{path.relative_to(ROOT)} must mention {term!r}")
@@ -219,4 +232,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

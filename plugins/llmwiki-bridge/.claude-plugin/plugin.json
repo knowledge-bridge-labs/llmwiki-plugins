@@ -1,7 +1,5 @@
 {
   "name": "llmwiki-bridge",
-  "displayName": "LLMWiki Bridge",
-  "version": "0.1.0",
   "description": "Guided skills for connecting Claude Code to existing LLMWiki, Markdown, or Obsidian knowledge through llmwiki-serve.",
   "author": {
     "name": "Knowledge Bridge Labs",

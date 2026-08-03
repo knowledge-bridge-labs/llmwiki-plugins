@@ -5,9 +5,15 @@
 - `py -3 scripts/validate_repo.py` passes.
 - Required repository files are present.
 - Root Claude marketplace JSON parses and points to `./plugins/llmwiki-bridge`.
+- Root Claude marketplace omits optional `description` fields that Claude Code
+  2.1.117 rejects.
 - Root Codex marketplace JSON parses and points to `./plugins/llmwiki-bridge`.
 - Claude plugin manifest parses and uses `name: llmwiki-bridge`.
+- Claude plugin manifest omits fixed `version` and optional `displayName` so
+  git-SHA updates and older Claude Code validators remain compatible.
 - Codex plugin manifest parses and uses `name: llmwiki-bridge`.
+- Codex plugin manifest keeps `interface.displayName: LLMWiki Bridge`.
+- Codex plugin manifest points to public GitHub `PRIVACY.md` and `TERMS.md`.
 - Exactly three skill directories exist: `setup`, `status`, and `doctor`.
 - No file creates an `lb` alias or executable.
 - Skill text includes approval gates for install, process start, and config
@@ -26,6 +32,10 @@ claude plugin validate ./plugins/llmwiki-bridge
 ```
 
 ```bash
+claude plugin validate .
+```
+
+```bash
 py -3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" ./plugins/llmwiki-bridge
 ```
 
@@ -37,6 +47,19 @@ py -3 scripts/run_optional_validators.py
 
 This optional runner skips missing host tools and reports which validators were
 actually executed.
+
+## Release Host Gate Acceptance
+
+The release host gate runs only on tag pushes and manual dispatch. It must:
+
+- install current `@anthropic-ai/claude-code` and `@openai/codex` CLIs
+- run `python scripts/validate_repo.py`
+- run `claude plugin validate .`
+- run `claude plugin validate ./plugins/llmwiki-bridge`
+- use an isolated `CODEX_HOME`
+- run `codex plugin marketplace add . --json`
+- run `codex plugin add llmwiki-bridge@knowledge-bridge-labs --json`
+- run `codex plugin list --available --json`
 
 ## Manual Smoke Acceptance
 
@@ -58,6 +81,20 @@ codex plugin add llmwiki-bridge@knowledge-bridge-labs
 
 After installing in Codex, start a new thread before testing skill invocation.
 
+Windows local validation on 2026-08-03 covered repository validation, optional
+validators, Claude root/plugin validation, Codex helper validation, and current
+Codex local marketplace add/install/list in an isolated `CODEX_HOME`. Codex
+reported PATH-alias warnings for a temporary home under `C:\tmp`, but
+marketplace add, plugin add, and list all succeeded.
+
+DGX Ubuntu validation on 2026-08-03 covered repository validation, current
+Codex local marketplace add/install/list in an isolated home, current Claude
+root/plugin validation, current Claude isolated marketplace install/list, and
+read-only `llmwiki-bridge-start` status/doctor commands. The preinstalled
+Claude Code 2.1.117 rejected optional Claude metadata before this compatibility
+fix, so root/plugin validation on that version remains a required release
+check.
+
 ## Runtime Behavior Acceptance
 
 The skills should lead the agent to:
@@ -69,5 +106,11 @@ The skills should lead the agent to:
   npm package
 - ask before `llmwiki-serve serve ...`
 - ask before writing any MCP or bridge configuration
-- prefer direct `http://127.0.0.1:<port>/mcp/stream` URLs for one source
+- derive direct MCP URLs from the `llmwiki-serve ls --json` base `url` by
+  appending `/mcp/stream`
+- avoid passing wildcard bind hosts to clients until the user confirms a
+  reachable host
+- explain that remote probes and later search or query text are sent to the
+  remote operator, recommend HTTPS, and require explicit approval for plain HTTP
+  on trusted networks
 - suggest Agent Bridge only for multi-source or runtime-backed synthesis

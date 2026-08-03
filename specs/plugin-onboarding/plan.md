@@ -14,7 +14,10 @@
    approval-language requirements, and data-safety patterns.
 8. Add CI that runs the repository validation script on Windows and Ubuntu.
 9. Run optional official host validators where available locally.
-10. Commit the MVP on `feat/initial-plugin`.
+10. Add a tag/manual release host gate that installs current Claude Code and
+    Codex CLIs, validates Claude root/plugin manifests, and smoke-tests Codex
+    marketplace add/install/list in an isolated home.
+11. Commit the MVP on `feat/initial-plugin`.
 
 ## Affected Files
 
@@ -26,6 +29,7 @@
 - `scripts/validate_repo.py`
 - `scripts/run_optional_validators.py`
 - `.github/workflows/ci.yml`
+- `.github/workflows/release-host-gates.yml`
 - repository governance docs
 - this spec and ADR
 
@@ -52,6 +56,8 @@
 ## Mitigations
 
 - Keep host manifests minimal and schema-specific.
+- Keep Claude Code optional fields out of the Claude manifest until older
+  validators accept them consistently.
 - Run the Codex helper validator and Claude Code validator when available.
 - Validate skill text against required approval and safety phrases.
 - Do not document host MCP configuration commands unless the host CLI has been

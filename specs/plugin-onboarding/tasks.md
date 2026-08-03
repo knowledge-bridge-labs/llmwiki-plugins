@@ -14,4 +14,8 @@
 - [x] Run repository validation.
 - [x] Run available official validators.
 - [x] Commit initial plugin MVP.
+- [x] Remove Claude Code optional manifest fields rejected by older validators.
+- [x] Add Privacy and Terms documents for Codex listing metadata.
+- [x] Add release host gate workflow for current Claude Code and Codex CLIs.
+- [x] Clarify MCP endpoint derivation and remote endpoint disclosure.
 - [ ] Report remaining public-registration steps.

@@ -1,0 +1,55 @@
+name: Release Host Gates
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  host-gates:
+    name: Current host CLI validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install current host CLIs
+        run: npm install --global @anthropic-ai/claude-code@latest @openai/codex@latest
+
+      - name: Confirm plugin command surfaces
+        run: |
+          claude --version
+          claude plugin validate --help
+          codex --version
+          codex plugin marketplace add --help
+          codex plugin add --help
+          codex plugin list --help
+
+      - name: Validate repository metadata
+        run: python scripts/validate_repo.py
+
+      - name: Validate Claude marketplace and plugin
+        run: |
+          claude plugin validate .
+          claude plugin validate ./plugins/llmwiki-bridge
+
+      - name: Smoke Codex local marketplace install
+        shell: bash
+        run: |
+          set -euo pipefail
+          export CODEX_HOME="${RUNNER_TEMP}/codex-home"
+          mkdir -p "$CODEX_HOME"
+          codex plugin marketplace add . --json
+          codex plugin add llmwiki-bridge@knowledge-bridge-labs --json
+          codex plugin list --available --json

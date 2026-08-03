@@ -15,8 +15,13 @@ This skill is read-only.
 - Run `llmwiki-serve ls --json` when `llmwiki-serve` is available.
 - Use the result to distinguish healthy, stale, registered, and orphan local
   source servers.
-- Report direct source MCP Streamable HTTP endpoints as
-  `http://127.0.0.1:<port>/mcp/stream` when the JSON contains a local URL.
+- Report direct source MCP Streamable HTTP endpoints by taking each
+  `llmwiki-serve ls --json` `url` value, removing any trailing slash, and
+  appending `/mcp/stream`.
+- Do not reconstruct endpoint URLs from separate host and port fields.
+- Do not pass wildcard bind hosts such as `0.0.0.0`, `::`, or `[::]` to a
+  client. If a reported URL uses a wildcard host, report that the user must
+  confirm a reachable host before configuration.
 - Ask before running any `npx llmwiki-bridge-start@latest ...` command if that
   command may download the package.
 - If approved and useful, run:
@@ -51,6 +56,7 @@ Summarize:
 - healthy source URLs
 - stale or duplicate notes
 - direct MCP Streamable HTTP URLs
+- any wildcard bind addresses that need a user-confirmed client host
 - whether `llmwiki-agent-bridge` appears reachable, if `bridge-start status`
   was approved
 - next setup command only when the user asks to connect or repair a source

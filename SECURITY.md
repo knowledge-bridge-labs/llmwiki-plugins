@@ -30,6 +30,7 @@ The skills must preserve these defaults:
 - No committed bearer tokens, API keys, private endpoints, or raw logs.
 
 When connecting a remote `llmwiki-serve` or `llmwiki-agent-bridge` endpoint,
-use trusted networks, TLS where appropriate, and host-managed secret storage.
-Do not write tokens into repository files.
-
+explain that probes and later search or query text are sent to the remote
+operator. Use HTTPS by default. Use plain HTTP only on a private or otherwise
+trusted network after explicit approval, and use host-managed secret storage
+when credentials are needed. Do not write tokens into repository files.

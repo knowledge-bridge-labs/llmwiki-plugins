@@ -25,4 +25,3 @@ jobs:
 
       - name: Validate repository
         run: python scripts/validate_repo.py
-
