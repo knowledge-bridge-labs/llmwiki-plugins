@@ -9,7 +9,13 @@ This skill is read-only.
 
 ## Do
 
-- Run `llmwiki-serve ls --json` when `llmwiki-serve` is available.
+- Run `llmwiki-serve ls --json` exactly once when `llmwiki-serve` is available,
+  bounded by a 20-30 second timeout using the host tool timeout or operating
+  system timeout wrapper. Recommended timeout: 25 seconds.
+- If the bounded `llmwiki-serve ls --json` call times out, stop status
+  discovery. Report any partial result captured by the tool plus the timeout.
+  Do not retry, do not run `npx`, do not run fixed-port scans, and do not run
+  alternative loopback probes.
 - Use the result to distinguish healthy, stale, registered, and orphan local
   source servers.
 - Report direct source MCP Streamable HTTP endpoints by taking each
@@ -19,9 +25,10 @@ This skill is read-only.
 - Do not pass wildcard bind hosts such as `0.0.0.0`, `::`, or `[::]` to a
   client. If a reported URL uses a wildcard host, report that the user must
   confirm a reachable host before configuration.
-- Ask before running any `npx llmwiki-bridge-start@latest ...` command if that
-  command may download the package.
-- If approved and useful, run:
+- Ask before running any `npx llmwiki-bridge-start@latest ...` command because
+  it may download the package and may take additional time. The user's request
+  for status is not approval to run `npx`.
+- If the user explicitly approves bridge-start status, run it at most once:
 
 ```bash
 npx llmwiki-bridge-start@latest status --json
@@ -35,6 +42,9 @@ npx llmwiki-bridge-start@latest status --json
 - Do not install packages from status. If a missing dependency must be
   installed, switch to setup and ask for explicit approval first.
 - Do not run fixed-port scans or heuristic loopback scans.
+- Do not retry `llmwiki-serve ls --json` after timeout.
+- Do not run `npx llmwiki-bridge-start@latest status --json` unless the user
+  separately approved that exact command.
 - Do not use `llmwiki-serve ls --probe-port` unless the user gives a specific
   port to diagnose.
 - Do not run home-wide discovery from status; route the user to setup and ask

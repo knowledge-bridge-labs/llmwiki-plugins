@@ -30,9 +30,14 @@ Start every setup by giving this short explanation in your own words:
 3. Ask for explicit approval before starting or restarting any process.
 4. Ask for explicit approval before writing Claude Code, Codex, MCP, bridge, or
    project configuration.
-5. Prefer direct `llmwiki-serve` source connections for one source.
-6. Suggest `llmwiki-agent-bridge` only when the user wants multiple sources or
-   runtime-backed answer synthesis.
+5. For exactly one source, use this default topology and do not add other
+   runtime hops: `wiki -> llmwiki-serve -> Claude Code/Codex`.
+6. Agent Bridge is never part of the default single-source topology. Do not
+   answer that a single `docs`, `wiki`, Markdown, or Obsidian source should go
+   through `llmwiki-agent-bridge` unless the user explicitly asks for multiple
+   sources, one aggregate endpoint, or runtime-backed answer synthesis.
+7. Suggest `llmwiki-agent-bridge` only as a separate optional escalation after
+   the single-source direct path has been explained.
 
 ## Read-Only Preflight
 
@@ -75,12 +80,20 @@ Ask the user to choose one of these bounded setup paths:
   query text are sent to that remote operator.
 
 Do not run home-wide discovery unless the user explicitly asks for it after the
-privacy notice.
+privacy notice. Do not automatically widen discovery from a named folder to its
+parent, siblings, workspace root, home directory, mounted drives, cloud-sync
+folders, or recent-project lists. Do not run broad sensitive-content inspection
+or secret scanning as part of setup unless the user explicitly asks for that
+separate audit. Stay inside the source boundary the user approved.
 
 ## Direct Source Setup
 
-For one local source, prefer direct `llmwiki-serve` registration. If the source
-is already running, use the URL reported by:
+For one local source, the direct path is mandatory by default:
+`wiki -> llmwiki-serve -> Claude Code/Codex`. A folder named `docs` is still a
+single wiki source for this decision. Do not insert `llmwiki-agent-bridge`
+between `llmwiki-serve` and the client for this case.
+
+If the source is already running, use the URL reported by:
 
 ```bash
 llmwiki-serve ls --json
@@ -119,7 +132,9 @@ workspace policy requires it.
 
 ## Optional Agent Bridge Escalation
 
-Suggest Agent Bridge only when at least one of these is true:
+Do not mention Agent Bridge as required, default, or part of the basic
+single-source setup. Suggest Agent Bridge only when at least one of these is
+explicitly true:
 
 - The user wants one endpoint across multiple `llmwiki-serve` sources.
 - The user wants runtime-backed answer synthesis from source evidence.

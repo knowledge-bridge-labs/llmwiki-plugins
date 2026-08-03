@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Fixed forward-test regressions in setup, doctor, and status skill guidance:
+  single-source setup now hard-pins the direct `llmwiki-serve` topology, remote
+  doctor checks require a separate yes/no probe approval, and status discovery
+  is a one-shot bounded command.
 - Removed Claude Code optional manifest fields that older Claude Code 2.1.117
   rejects during validation.
 - Added Privacy and Terms documents and pointed Codex listing metadata at those

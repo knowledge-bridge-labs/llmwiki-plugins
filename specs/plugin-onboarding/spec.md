@@ -76,6 +76,26 @@ and multi-source escalation layer.
 17. Release host gates must run current Claude Code root/plugin validation and
     a current Codex isolated marketplace add/install/list smoke before public
     registration.
+18. Setup must treat exactly one source as the direct topology
+    `wiki -> llmwiki-serve -> Claude Code/Codex`. Agent Bridge must not be
+    named as a default or required hop for one `docs`, `wiki`, Markdown, or
+    Obsidian source; it may be proposed only when the user explicitly requests
+    multiple sources, one aggregate endpoint, or runtime-backed synthesis.
+19. Setup must not widen discovery from an explicitly named folder to parents,
+    siblings, home directories, mounted drives, cloud-sync folders, or recent
+    projects unless the user explicitly approves that broader scope after a
+    privacy notice. It must not run broad sensitive-content inspection unless
+    the user asks for that separate audit.
+20. Doctor must not treat a user's remote diagnostic request as approval for a
+    remote or non-loopback network probe. It must disclose the URL or redacted
+    host, DNS/TCP/HTTP contact, IP and query exposure, and HTTPS recommendation,
+    then ask yes/no and wait for the next user response before any DNS, TCP,
+    HTTP, HTTPS, `npx`, or bridge doctor contact.
+21. Status must run `llmwiki-serve ls --json` at most once with a bounded
+    20-30 second timeout. On timeout it must report partial output and the
+    timeout without retrying, scanning guessed ports, running `npx`, or probing
+    alternate endpoints. `npx llmwiki-bridge-start@latest status --json` is a
+    separately approved one-shot follow-up only.
 
 ## Compatibility
 

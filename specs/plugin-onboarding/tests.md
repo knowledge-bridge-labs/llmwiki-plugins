@@ -26,6 +26,22 @@
   writes.
 - Skill text requires bounded discovery and no home-wide scan without approval.
 - Skill text forbids wiki modification and upload.
+- Setup skill text fixes the single-source default topology as
+  `wiki -> llmwiki-serve -> Claude Code/Codex`, forbids Agent Bridge as a
+  default hop for one source, and allows it only for explicit multi-source,
+  aggregate-endpoint, or runtime-synthesis requests.
+- Setup skill text forbids automatically widening a named source folder to
+  parents, siblings, home, mounted drives, cloud-sync folders, or recent
+  projects and forbids broad sensitive-content inspection unless separately
+  requested.
+- Doctor skill text states that a remote diagnostic request is not approval for
+  network probing, requires disclosure of URL/redacted host, DNS/TCP/HTTP
+  contact, IP/query exposure, and HTTPS recommendation, then requires a yes/no
+  question and waiting for the next user response before any network command.
+- Status skill text requires exactly one bounded `llmwiki-serve ls --json`
+  call with a 20-30 second timeout, no retry or fixed-port fallback on timeout,
+  and separate approval before one `npx llmwiki-bridge-start@latest status
+  --json` run.
 - No committed file contains private local path patterns or obvious secret
   placeholders.
 
@@ -126,3 +142,7 @@ The skills should lead the agent to:
   remote operator, recommend HTTPS, and require explicit approval for plain HTTP
   on trusted networks
 - suggest Agent Bridge only for multi-source or runtime-backed synthesis
+- refuse to probe `http://example.invalid:8765` or any other remote/non-loopback
+  URL until after the disclosure and a separate affirmative user response
+- finish status quickly when `llmwiki-serve ls --json` hangs by reporting the
+  bounded timeout instead of retrying, scanning ports, or running `npx`

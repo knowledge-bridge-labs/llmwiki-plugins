@@ -168,6 +168,7 @@ def assert_skills() -> None:
         if not fields.get("description"):
             fail(f"{path.relative_to(ROOT)} must include description frontmatter")
         text = path.read_text(encoding="utf-8").lower()
+        normalized_text = re.sub(r"\s+", " ", text)
         required_terms = [
             "explicit approval",
             "install",
@@ -188,6 +189,58 @@ def assert_skills() -> None:
         for term in required_terms:
             if term not in text:
                 fail(f"{path.relative_to(ROOT)} must mention {term!r}")
+        if name == "setup":
+            setup_terms = [
+                "wiki -> llmwiki-serve -> claude code/codex",
+                "agent bridge is never part of the default single-source topology",
+                "do not insert `llmwiki-agent-bridge`",
+                "explicitly asks for multiple sources",
+                "one aggregate endpoint",
+                "runtime-backed answer synthesis",
+                "do not automatically widen discovery",
+                "parent, siblings, workspace root, home directory",
+                "mounted drives",
+                "cloud-sync folders",
+                "recent-project lists",
+                "broad sensitive-content inspection",
+                "stay inside the source boundary the user approved",
+            ]
+            for term in setup_terms:
+                if term not in normalized_text:
+                    fail(f"{path.relative_to(ROOT)} must include setup regression guard {term!r}")
+        if name == "doctor":
+            doctor_terms = [
+                "is not approval to probe",
+                "dns lookup",
+                "tcp connection attempts",
+                "http or https requests",
+                "user's ip address",
+                "yes/no approval question",
+                "wait for the next user response",
+                "resolve-dnsname",
+                "test-netconnection",
+                "invoke-webrequest",
+                "fetch",
+                "do not run",
+            ]
+            for term in doctor_terms:
+                if term not in normalized_text:
+                    fail(f"{path.relative_to(ROOT)} must include doctor regression guard {term!r}")
+        if name == "status":
+            status_terms = [
+                "exactly once",
+                "20-30 second timeout",
+                "recommended timeout: 25 seconds",
+                "if the bounded `llmwiki-serve ls --json` call times out",
+                "do not retry",
+                "do not run `npx`",
+                "do not run fixed-port scans",
+                "at most once",
+                "separately approved that exact command",
+            ]
+            for term in status_terms:
+                if term not in normalized_text:
+                    fail(f"{path.relative_to(ROOT)} must include status regression guard {term!r}")
 
 
 def assert_skill_openai_metadata() -> None:
