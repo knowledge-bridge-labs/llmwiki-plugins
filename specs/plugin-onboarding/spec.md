@@ -63,9 +63,10 @@ and multi-source escalation layer.
 12. Public listing copy and repository docs must clearly distinguish the plugin
     from Agent Bridge runtime synthesis, even when a host manifest omits
     optional description fields for compatibility.
-13. Direct MCP Streamable HTTP endpoints must be derived from each
-    `llmwiki-serve ls --json` base `url` by appending `/mcp/stream`; skills must
-    not reconstruct client URLs from separate host and port fields.
+13. Usable direct MCP Streamable HTTP endpoints must be derived only for
+    healthy `llmwiki-serve` sources from each `llmwiki-serve ls --json` base
+    `url` by appending `/mcp/stream`; skills must not reconstruct client URLs
+    from separate host and port fields.
 14. Wildcard bind hosts such as `0.0.0.0`, `::`, and `[::]` must not be passed
     to clients. The user must confirm a reachable client host first.
 15. Remote or non-loopback endpoints require disclosure that probes and later
@@ -96,6 +97,16 @@ and multi-source escalation layer.
     timeout without retrying, scanning guessed ports, running `npx`, or probing
     alternate endpoints. `npx llmwiki-bridge-start@latest status --json` is a
     separately approved one-shot follow-up only.
+22. Status must present `/mcp/stream` URLs as usable only for healthy,
+    non-wildcard sources. Stale, unhealthy, registered-only, orphan, duplicate,
+    timed-out, ambiguous, or wildcard-host sources may show diagnostic base URLs
+    only and must not have `/mcp/stream` appended.
+23. The public Codex submission ZIP must be deterministic and skills-only. Its
+    archive root must contain only `.codex-plugin/plugin.json` and `skills/**`
+    from `plugins/llmwiki-bridge`, with `.claude-plugin`, `.mcp.json`,
+    `.app.json`, plugin README files, caches, and build outputs excluded.
+24. Public submission and validation docs must avoid credentials, private
+    endpoints, private local paths, and raw logs.
 
 ## Compatibility
 

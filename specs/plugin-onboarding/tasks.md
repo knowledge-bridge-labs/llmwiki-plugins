@@ -22,4 +22,10 @@
       official `skill-creator` helper.
 - [x] Add skill metadata and `quick_validate.py` checks to local validators and
       docs.
+- [x] Harden status guidance so only healthy sources get usable direct MCP
+      Streamable HTTP URLs.
+- [x] Add public OpenAI/Codex and Claude marketplace submission drafts.
+- [x] Add redacted cross-platform validation record.
+- [x] Add deterministic skills-only Codex submission ZIP builder.
+- [x] Add release host gate artifact upload for the generated Codex ZIP.
 - [ ] Report remaining public-registration steps.

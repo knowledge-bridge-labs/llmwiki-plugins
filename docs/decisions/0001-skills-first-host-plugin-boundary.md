@@ -39,9 +39,11 @@ The MVP plugin is skills-first:
 - It keeps `llmwiki-serve` direct source setup as the default for one source.
 - It suggests `llmwiki-agent-bridge` only for multi-source or runtime-backed
   synthesis.
-- It derives direct MCP Streamable HTTP endpoints from the base `url` reported
-  by `llmwiki-serve ls --json` and appends `/mcp/stream`; it does not
-  reconstruct client URLs from separate host and port fields.
+- It derives usable direct MCP Streamable HTTP endpoints only for healthy
+  sources from the base `url` reported by `llmwiki-serve ls --json` and appends
+  `/mcp/stream`; it does not reconstruct client URLs from separate host and port
+  fields. Stale, unhealthy, orphaned, duplicate, timed-out, or ambiguous sources
+  may show diagnostic base URLs only and must not receive `/mcp/stream`.
 - It treats wildcard bind hosts such as `0.0.0.0`, `::`, and `[::]` as bind
   addresses that need a user-confirmed reachable client host.
 

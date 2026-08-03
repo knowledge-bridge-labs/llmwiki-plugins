@@ -33,11 +33,15 @@ REQUIRED_FILES = [
     "plugins/llmwiki-bridge/skills/status/agents/openai.yaml",
     "plugins/llmwiki-bridge/skills/doctor/SKILL.md",
     "plugins/llmwiki-bridge/skills/doctor/agents/openai.yaml",
+    "scripts/build_codex_submission.py",
     "specs/plugin-onboarding/spec.md",
     "specs/plugin-onboarding/plan.md",
     "specs/plugin-onboarding/tasks.md",
     "specs/plugin-onboarding/tests.md",
     "docs/decisions/0001-skills-first-host-plugin-boundary.md",
+    "docs/submission/openai-listing.md",
+    "docs/submission/claude-listing.md",
+    "docs/validation/0.1.0-cross-platform.md",
 ]
 
 
@@ -237,6 +241,13 @@ def assert_skills() -> None:
                 "do not run fixed-port scans",
                 "at most once",
                 "separately approved that exact command",
+                "healthy sources only",
+                "usable direct mcp",
+                "diagnostic base url",
+                "do not append `/mcp/stream` to stale",
+                "unhealthy",
+                "ambiguous",
+                "wildcard-host",
             ]
             for term in status_terms:
                 if term not in normalized_text:
@@ -281,6 +292,93 @@ def assert_no_forbidden_components() -> None:
         fail("forbidden plugin component(s): " + ", ".join(found))
 
 
+def assert_submission_docs() -> None:
+    openai = (ROOT / "docs" / "submission" / "openai-listing.md").read_text(encoding="utf-8").lower()
+    openai_normalized = re.sub(r"\s+", " ", openai)
+    openai_terms = [
+        "listing copy",
+        "starter prompts",
+        "positive test cases",
+        "negative test cases",
+        "expected behavior",
+        "privacy and approval boundaries",
+        "healthy sources only",
+        "does not append `/mcp/stream`",
+    ]
+    for term in openai_terms:
+        if term not in openai_normalized:
+            fail(f"docs/submission/openai-listing.md must include {term!r}")
+
+    claude = (ROOT / "docs" / "submission" / "claude-listing.md").read_text(encoding="utf-8").lower()
+    claude_normalized = re.sub(r"\s+", " ", claude)
+    claude_terms = [
+        "name: llmwiki bridge",
+        "use cases",
+        "security notes",
+        "repository: https://github.com/knowledge-bridge-labs/llmwiki-plugins",
+        "documentation: https://knowledge-bridge-labs.github.io/llmwiki-docs/",
+        "privacy policy: https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/privacy.md",
+        "terms: https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/terms.md",
+        "pre-submit checklist",
+        "not a submitted form",
+    ]
+    for term in claude_terms:
+        if term not in claude_normalized:
+            fail(f"docs/submission/claude-listing.md must include {term!r}")
+
+    validation = (ROOT / "docs" / "validation" / "0.1.0-cross-platform.md").read_text(encoding="utf-8").lower()
+    validation_normalized = re.sub(r"\s+", " ", validation)
+    validation_terms = [
+        "windows x64",
+        "dgx ubuntu arm64",
+        "first-commit findings",
+        "post-fix pass",
+        "redacted",
+        "bridge-start status",
+        "bridge-start doctor",
+    ]
+    for term in validation_terms:
+        if term not in validation_normalized:
+            fail(f"docs/validation/0.1.0-cross-platform.md must include {term!r}")
+
+
+def assert_codex_submission_builder() -> None:
+    gitignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
+    if "dist/" not in gitignore.splitlines():
+        fail(".gitignore must ignore dist/")
+
+    script = (ROOT / "scripts" / "build_codex_submission.py").read_text(encoding="utf-8")
+    builder_terms = [
+        ".codex-plugin",
+        "plugin.json",
+        "skills/",
+        "ZipInfo",
+        "compresslevel=9",
+        "codex-skills.zip",
+        ".claude-plugin",
+        ".mcp.json",
+        ".app.json",
+        "README.md",
+    ]
+    for term in builder_terms:
+        if term not in script:
+            fail(f"scripts/build_codex_submission.py must include {term!r}")
+
+    workflow = (ROOT / ".github" / "workflows" / "release-host-gates.yml").read_text(encoding="utf-8")
+    workflow_terms = [
+        "python scripts/build_codex_submission.py",
+        "actions/upload-artifact@v4",
+        "dist/llmwiki-bridge-*-codex-skills.zip",
+    ]
+    for term in workflow_terms:
+        if term not in workflow:
+            fail(f".github/workflows/release-host-gates.yml must include {term!r}")
+    forbidden_release_uploads = ["gh release upload", "softprops/action-gh-release", "actions/upload-release-asset"]
+    for term in forbidden_release_uploads:
+        if term in workflow:
+            fail("release host workflow must not upload ZIPs to tag releases")
+
+
 def assert_no_sensitive_literals() -> None:
     windows_user = re.compile(r"\b[A-Za-z]:\\(?:Users|Documents and Settings)\\[^\\\s]+")
     posix_user = re.compile("/" + "home" + r"/[^/\s]+|/" + "Users" + r"/[^/\s]+")
@@ -314,6 +412,8 @@ def main() -> None:
     assert_skills()
     assert_skill_openai_metadata()
     assert_no_forbidden_components()
+    assert_submission_docs()
+    assert_codex_submission_builder()
     assert_no_sensitive_literals()
     print("Repository validation passed.")
 

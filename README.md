@@ -29,12 +29,15 @@ Add `llmwiki-agent-bridge` only when you want one endpoint across multiple
 sources or model-backed answer synthesis. The marketplace wording and skills
 avoid treating Agent Bridge as the default runtime.
 
-When a running source is discovered, use the base `url` from
+When a healthy running source is discovered, use the base `url` from
 `llmwiki-serve ls --json`, remove any trailing slash, and append `/mcp/stream`
-for the direct MCP Streamable HTTP endpoint. Do not rebuild the URL from
-separate host and port fields. If a source reports a wildcard bind host such as
-`0.0.0.0`, `::`, or `[::]`, confirm a reachable client host with the user before
-writing any client configuration.
+for the usable direct MCP Streamable HTTP endpoint. Do not rebuild the URL from
+separate host and port fields. Stale, unhealthy, orphaned, duplicate, timed-out,
+or ambiguous sources may be shown with their diagnostic base URL only; do not
+append `/mcp/stream` or present them as usable MCP endpoints. If a source reports
+a wildcard bind host such as `0.0.0.0`, `::`, or `[::]`, confirm a reachable
+client host with the user before constructing an MCP URL or writing any client
+configuration.
 
 The plugin reuses the existing onboarding package:
 
@@ -146,6 +149,9 @@ Use the llmwiki-bridge:doctor skill for a read-only readiness check.
 | `plugins/llmwiki-bridge/.codex-plugin/plugin.json` | Codex plugin manifest. |
 | `plugins/llmwiki-bridge/skills/` | Shared skills loaded by both hosts. |
 | `plugins/llmwiki-bridge/skills/*/agents/openai.yaml` | Codex skill-list metadata generated with the official skill-creator helper. |
+| `scripts/build_codex_submission.py` | Deterministic skills-only Codex submission ZIP builder. |
+| `docs/submission/` | Public OpenAI/Codex and Claude marketplace listing drafts. |
+| `docs/validation/` | Redacted cross-platform validation records. |
 | `PRIVACY.md` | Privacy policy URL used by Codex listing metadata. |
 | `TERMS.md` | Terms of service URL used by Codex listing metadata. |
 | `scripts/validate_repo.py` | JSON, frontmatter, structure, and safety validation. |
@@ -174,5 +180,15 @@ Codex, Node, Python packages, or any LLMWiki runtime.
 
 Release host gates run separately on tags and manual dispatch. They install the
 current Claude Code and Codex CLIs, require Claude root and plugin validation,
-and smoke-test Codex local marketplace add/install/list in an isolated
-`CODEX_HOME`.
+smoke-test Codex local marketplace add/install/list in an isolated `CODEX_HOME`,
+build the public skills-only Codex submission ZIP, and upload that ZIP only as a
+CI artifact.
+
+Build the public skills-only Codex submission archive locally:
+
+```bash
+py -3 scripts/build_codex_submission.py
+```
+
+The ZIP is written under ignored `dist/` and contains only
+`.codex-plugin/plugin.json` and `skills/**` from `plugins/llmwiki-bridge`.

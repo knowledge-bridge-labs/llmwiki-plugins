@@ -17,6 +17,12 @@
 - Added generated `agents/openai.yaml` metadata for the `setup`, `status`, and
   `doctor` skills.
 - Added `skill-creator` quick validation to optional local validator gates.
+- Hardened status guidance and validation so stale, unhealthy, ambiguous, and
+  wildcard-host sources cannot be presented with usable `/mcp/stream` URLs.
+- Added public OpenAI/Codex and Claude submission drafts plus a redacted
+  cross-platform validation record.
+- Added a deterministic skills-only Codex submission ZIP builder and release
+  host CI artifact upload.
 
 ## 0.1.0 - 2026-08-03
 

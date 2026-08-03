@@ -42,6 +42,16 @@
   call with a 20-30 second timeout, no retry or fixed-port fallback on timeout,
   and separate approval before one `npx llmwiki-bridge-start@latest status
   --json` run.
+- Status skill text presents usable direct MCP URLs for healthy sources only.
+  Stale, unhealthy, registered-only, orphan, duplicate, timed-out, ambiguous, or
+  wildcard-host sources may show diagnostic base URLs only and must not have
+  `/mcp/stream` appended.
+- Public OpenAI/Codex and Claude submission docs are present, include test
+  cases and approval/privacy boundaries, and avoid private endpoints or private
+  local paths.
+- `scripts/build_codex_submission.py` produces a deterministic version-named
+  ZIP under ignored `dist/` containing only `.codex-plugin/plugin.json` and
+  `skills/**`.
 - No committed file contains private local path patterns or obvious secret
   placeholders.
 
@@ -76,12 +86,20 @@ py -3 scripts/run_optional_validators.py
 This optional runner skips missing host tools and reports which validators were
 actually executed, including `skill-creator` quick validation when available.
 
+Build and inspect the public Codex submission ZIP:
+
+```bash
+py -3 scripts/build_codex_submission.py
+```
+
 ## Release Host Gate Acceptance
 
 The release host gate runs only on tag pushes and manual dispatch. It must:
 
 - install current `@anthropic-ai/claude-code` and `@openai/codex` CLIs
 - run `python scripts/validate_repo.py`
+- run `python scripts/build_codex_submission.py`
+- upload the generated ZIP as a CI artifact only
 - run `claude plugin validate .`
 - run `claude plugin validate ./plugins/llmwiki-bridge`
 - use an isolated `CODEX_HOME`
@@ -112,13 +130,13 @@ After installing in Codex, start a new thread before testing skill invocation.
 Windows local validation on 2026-08-03 covered repository validation, optional
 validators, Claude root/plugin validation, Codex helper validation, and current
 Codex local marketplace add/install/list in an isolated `CODEX_HOME`. Codex
-reported PATH-alias warnings for a temporary home under `C:\tmp`, but
-marketplace add, plugin add, and list all succeeded.
+reported PATH-alias warnings for an isolated temporary home, but marketplace
+add, plugin add, and list all succeeded.
 
-DGX Ubuntu validation on 2026-08-03 covered repository validation, current
-Codex local marketplace add/install/list in an isolated home, current Claude
-root/plugin validation, current Claude isolated marketplace install/list, and
-read-only `llmwiki-bridge-start` status/doctor commands. The preinstalled
+DGX Ubuntu ARM64 validation on 2026-08-03 covered repository validation,
+current Codex local marketplace add/install/list in an isolated home, current
+Claude root/plugin validation, current Claude isolated marketplace install/list,
+and read-only `llmwiki-bridge-start` status/doctor commands. The preinstalled
 Claude Code 2.1.117 rejected optional Claude metadata before this compatibility
 fix, so root/plugin validation on that version remains a required release
 check.
@@ -135,6 +153,9 @@ The skills should lead the agent to:
 - ask before `llmwiki-serve serve ...`
 - ask before writing any MCP or bridge configuration
 - derive direct MCP URLs from the `llmwiki-serve ls --json` base `url` by
+  appending `/mcp/stream` for healthy sources only
+- report stale, unhealthy, registered-only, orphan, duplicate, timed-out,
+  ambiguous, or wildcard-host sources with diagnostic base URLs only, without
   appending `/mcp/stream`
 - avoid passing wildcard bind hosts to clients until the user confirms a
   reachable host

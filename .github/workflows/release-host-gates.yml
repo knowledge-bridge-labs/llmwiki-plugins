@@ -39,6 +39,16 @@ jobs:
       - name: Validate repository metadata
         run: python scripts/validate_repo.py
 
+      - name: Build Codex skills-only submission ZIP
+        run: python scripts/build_codex_submission.py
+
+      - name: Upload Codex submission ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: llmwiki-bridge-codex-skills
+          path: dist/llmwiki-bridge-*-codex-skills.zip
+          if-no-files-found: error
+
       - name: Validate Claude marketplace and plugin
         run: |
           claude plugin validate .
