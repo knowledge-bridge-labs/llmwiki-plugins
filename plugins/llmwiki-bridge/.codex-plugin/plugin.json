@@ -1,6 +1,6 @@
 {
   "name": "llmwiki-bridge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Guided skills for connecting Codex to existing LLMWiki, Markdown, or Obsidian knowledge through llmwiki-serve.",
   "author": {
     "name": "Knowledge Bridge Labs",
@@ -21,7 +21,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "LLMWiki Bridge",
-    "shortDescription": "Connect Codex to cited LLMWiki and Markdown context.",
+    "shortDescription": "Connect Codex to LLMWiki",
     "longDescription": "LLMWiki Bridge provides setup, status, and doctor skills for connecting Codex to existing LLMWiki, Markdown, or Obsidian knowledge through llmwiki-serve. It starts with direct source connections and suggests llmwiki-agent-bridge only when multi-source or runtime-backed synthesis is needed.",
     "developerName": "Knowledge Bridge Labs",
     "category": "Productivity",

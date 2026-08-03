@@ -4,6 +4,18 @@
 
 No unreleased changes yet.
 
+## 0.1.1 - 2026-08-04
+
+- Prepared an OpenAI directory submission-readiness metadata patch.
+- Updated the Codex manifest version to `0.1.1` and shortened
+  `interface.shortDescription` to `Connect Codex to LLMWiki`.
+- Added static validation for the 0.1.1 Codex manifest version and ASCII
+  short description length.
+- Enriched the public OpenAI/Codex listing with initial release notes, fixture
+  data, and expected result shapes for review test cases.
+- Records runtime behavior unchanged from 0.1.0; no skills, commands, background
+  processes, endpoint behavior, or approval gates changed.
+
 ## 0.1.0 - 2026-08-04
 
 - Released the initial public GitHub marketplace version of the skills-first

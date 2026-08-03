@@ -8,6 +8,10 @@ coding agents connect to existing LLMWiki, Markdown, or Obsidian-style
 knowledge through the published LLMWiki tools without becoming another runtime
 service.
 
+Version 0.1.1 is a Codex/OpenAI submission-readiness patch for manifest
+metadata, listing fixtures, and validation records only, with runtime behavior unchanged
+from 0.1.0.
+
 The plugin does not ship an `lb` alias, executable, MCP server, background
 process, wiki compiler, crawler, or model runtime. It packages three
 namespaced skills:

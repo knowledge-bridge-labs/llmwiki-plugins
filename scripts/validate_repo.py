@@ -12,6 +12,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "llmwiki-bridge"
 SKILLS = PLUGIN / "skills"
+EXPECTED_CODEX_VERSION = "0.1.1"
+EXPECTED_CODEX_SHORT_DESCRIPTION = "Connect Codex to LLMWiki"
+CODEX_SHORT_DESCRIPTION_MAX_LENGTH = 30
 
 
 REQUIRED_FILES = [
@@ -42,6 +45,7 @@ REQUIRED_FILES = [
     "docs/submission/openai-listing.md",
     "docs/submission/claude-listing.md",
     "docs/validation/0.1.0-cross-platform.md",
+    "docs/validation/0.1.1-submission-readiness.md",
 ]
 
 
@@ -125,8 +129,22 @@ def assert_plugin_manifests() -> None:
     interface = codex.get("interface")
     if not isinstance(interface, dict):
         fail("Codex manifest must include interface metadata")
+    if codex.get("version") != EXPECTED_CODEX_VERSION:
+        fail(f"Codex manifest version must be {EXPECTED_CODEX_VERSION}")
     if interface.get("displayName") != "LLMWiki Bridge":
         fail("Codex displayName must be LLMWiki Bridge")
+    short_description = interface.get("shortDescription")
+    if not isinstance(short_description, str):
+        fail("Codex shortDescription must be a string")
+    if short_description != EXPECTED_CODEX_SHORT_DESCRIPTION:
+        fail(f"Codex shortDescription must be {EXPECTED_CODEX_SHORT_DESCRIPTION!r}")
+    if not short_description.isascii():
+        fail("Codex shortDescription must be ASCII")
+    if len(short_description) > CODEX_SHORT_DESCRIPTION_MAX_LENGTH:
+        fail(
+            "Codex shortDescription must be at most "
+            f"{CODEX_SHORT_DESCRIPTION_MAX_LENGTH} characters"
+        )
     if interface.get("privacyPolicyURL") != "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/PRIVACY.md":
         fail("Codex privacyPolicyURL must point to public PRIVACY.md")
     if interface.get("termsOfServiceURL") != "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/TERMS.md":
@@ -300,6 +318,9 @@ def assert_submission_docs() -> None:
         "starter prompts",
         "positive test cases",
         "negative test cases",
+        "initial release notes",
+        "fixture data required",
+        "expected result shape",
         "expected behavior",
         "privacy and approval boundaries",
         "healthy sources only",
@@ -340,6 +361,23 @@ def assert_submission_docs() -> None:
     for term in validation_terms:
         if term not in validation_normalized:
             fail(f"docs/validation/0.1.0-cross-platform.md must include {term!r}")
+
+    validation_011 = (ROOT / "docs" / "validation" / "0.1.1-submission-readiness.md").read_text(encoding="utf-8").lower()
+    validation_011_normalized = re.sub(r"\s+", " ", validation_011)
+    validation_011_terms = [
+        "0.1.1",
+        "submission-readiness",
+        "redacted",
+        "runtime behavior unchanged",
+        "py -3 scripts/validate_repo.py",
+        "py -3 scripts/build_codex_submission.py",
+        "py -3 scripts/run_optional_validators.py",
+        "dist/llmwiki-bridge-0.1.1-codex-skills.zip",
+        "sha256",
+    ]
+    for term in validation_011_terms:
+        if term not in validation_011_normalized:
+            fail(f"docs/validation/0.1.1-submission-readiness.md must include {term!r}")
 
 
 def assert_codex_submission_builder() -> None:

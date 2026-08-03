@@ -12,7 +12,10 @@
 - Claude plugin manifest omits fixed `version` and optional `displayName` so
   git-SHA updates and older Claude Code validators remain compatible.
 - Codex plugin manifest parses and uses `name: llmwiki-bridge`.
+- Codex plugin manifest uses `version: 0.1.1`.
 - Codex plugin manifest keeps `interface.displayName: LLMWiki Bridge`.
+- Codex plugin manifest uses `interface.shortDescription: Connect Codex to
+  LLMWiki`; the value is ASCII and 30 characters or fewer.
 - Codex plugin manifest points to public GitHub `PRIVACY.md` and `TERMS.md`.
 - Codex plugin manifest default prompts explicitly name
   `llmwiki-bridge:setup`, `llmwiki-bridge:status`, and
@@ -49,6 +52,12 @@
 - Public OpenAI/Codex and Claude submission docs are present, include test
   cases and approval/privacy boundaries, and avoid private endpoints or private
   local paths.
+- Public OpenAI/Codex listing includes Initial Release Notes, six positive
+  test cases and four negative test cases, and each test row explicitly names
+  Fixture Data Required and Expected Result Shape.
+- `docs/validation/0.1.1-submission-readiness.md` is present and records
+  redacted/local-safe validation results for the 0.1.1 submission-readiness
+  patch.
 - `scripts/build_codex_submission.py` produces a deterministic version-named
   ZIP under ignored `dist/` containing only `.codex-plugin/plugin.json` and
   `skills/**`.

@@ -35,5 +35,13 @@
       Claude Code and Codex.
 - [x] Report v0.1.0 public GitHub marketplace verification status in release
       validation docs.
+- [x] Prepare v0.1.1 OpenAI directory submission-readiness metadata patch.
+- [x] Set Codex manifest version to 0.1.1 and short description to
+      `Connect Codex to LLMWiki`.
+- [x] Add static validation for the 0.1.1 Codex manifest version, ASCII short
+      description, and 30-character maximum.
+- [x] Enrich OpenAI listing test tables with fixture data and expected result
+      shapes.
+- [x] Add redacted v0.1.1 submission-readiness validation record.
 - [ ] Submit Claude community marketplace form manually after release.
 - [ ] Submit OpenAI directory portal manually after release.
