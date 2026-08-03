@@ -28,4 +28,12 @@
 - [x] Add redacted cross-platform validation record.
 - [x] Add deterministic skills-only Codex submission ZIP builder.
 - [x] Add release host gate artifact upload for the generated Codex ZIP.
-- [ ] Report remaining public-registration steps.
+- [x] Publish public GitHub marketplace repository on `main`.
+- [x] Verify public GitHub marketplace add/install/list on Windows x64 for
+      Claude Code and Codex.
+- [x] Verify public GitHub marketplace add/install/list on DGX Ubuntu ARM64 for
+      Claude Code and Codex.
+- [x] Report v0.1.0 public GitHub marketplace verification status in release
+      validation docs.
+- [ ] Submit Claude community marketplace form manually after release.
+- [ ] Submit OpenAI directory portal manually after release.

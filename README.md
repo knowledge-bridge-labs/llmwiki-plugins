@@ -72,7 +72,7 @@ Local test:
 /llmwiki-bridge:setup
 ```
 
-GitHub distribution after the repository is pushed:
+Public GitHub distribution:
 
 ```text
 /plugin marketplace add knowledge-bridge-labs/llmwiki-plugins
@@ -96,7 +96,7 @@ codex plugin marketplace add ./llmwiki-plugins
 codex plugin add llmwiki-bridge@knowledge-bridge-labs
 ```
 
-GitHub distribution after the repository is pushed:
+Public GitHub distribution:
 
 ```bash
 codex plugin marketplace add knowledge-bridge-labs/llmwiki-plugins --ref main

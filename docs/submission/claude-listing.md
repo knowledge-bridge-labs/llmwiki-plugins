@@ -62,21 +62,28 @@ Terms: https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/TERMS.
 
 ## Pre-Submit Checklist
 
-- [ ] Repository is public and points to the intended release commit.
-- [ ] `py -3 scripts/validate_repo.py` passes.
-- [ ] `py -3 scripts/run_optional_validators.py` passes or documents skipped
+- [x] Repository is public and points to the intended release commit.
+- [x] `py -3 scripts/validate_repo.py` passes.
+- [x] `py -3 scripts/run_optional_validators.py` passes or documents skipped
       unavailable host validators.
-- [ ] `claude plugin validate .` passes with the target Claude Code CLI.
-- [ ] `claude plugin validate ./plugins/llmwiki-bridge` passes with the target
+- [x] `claude plugin validate .` passes with the target Claude Code CLI.
+- [x] `claude plugin validate ./plugins/llmwiki-bridge` passes with the target
       Claude Code CLI.
-- [ ] Claude local marketplace add/install/list smoke has passed in an
+- [x] Claude local marketplace add/install/list smoke has passed in an
       isolated test home.
-- [ ] Codex local marketplace add/install/list smoke has passed in an isolated
+- [x] Claude public GitHub marketplace add/install/list smoke has passed on
+      Windows x64 and DGX Ubuntu ARM64.
+- [x] Codex local marketplace add/install/list smoke has passed in an isolated
       test home.
-- [ ] `py -3 scripts/build_codex_submission.py` builds and prints the expected
+- [x] Codex public GitHub marketplace add/install/list smoke has passed on
+      Windows x64 and DGX Ubuntu ARM64.
+- [x] `py -3 scripts/build_codex_submission.py` builds and prints the expected
       skills-only ZIP contents.
-- [ ] Public listing copy contains no credentials, private endpoints, private
+- [x] Codex skills-only ZIP SHA256:
+      `622DB83E37F57DB3C16569BA45254B1011822B30ED23B750CD72FE644C2CD7F7`.
+- [x] Public listing copy contains no credentials, private endpoints, private
       local paths, or raw logs.
-- [ ] Privacy and Terms URLs resolve to public repository documents.
-- [ ] No real marketplace form or security attestation has been submitted from
-      this draft.
+- [x] Privacy and Terms URLs resolve to public repository documents.
+- [ ] Claude community marketplace form has been submitted. Pending manual
+      submission; no real marketplace form or security attestation has been
+      submitted from this draft.

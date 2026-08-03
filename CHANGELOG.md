@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+No unreleased changes yet.
+
+## 0.1.0 - 2026-08-04
+
+- Released the initial public GitHub marketplace version of the skills-first
+  `llmwiki-bridge` plugin for Claude Code and Codex.
+- Added shared `setup`, `status`, and `doctor` skills.
+- Added Claude Code and Codex marketplace metadata.
+- Added plugin onboarding spec, ADR, validation script, and CI.
 - Fixed forward-test regressions in setup, doctor, and status skill guidance:
   single-source setup now hard-pins the direct `llmwiki-serve` topology, remote
   doctor checks require a separate yes/no probe approval, and status discovery
@@ -23,10 +32,11 @@
   cross-platform validation record.
 - Added a deterministic skills-only Codex submission ZIP builder and release
   host CI artifact upload.
-
-## 0.1.0 - 2026-08-03
-
-- Added initial skills-first `llmwiki-bridge` plugin for Claude Code and Codex.
-- Added shared `setup`, `status`, and `doctor` skills.
-- Added Claude Code and Codex marketplace metadata.
-- Added plugin onboarding spec, ADR, validation script, and CI.
+- Verified public GitHub marketplace install on Windows x64 and DGX Ubuntu
+  ARM64 for both Claude Code and Codex.
+- Built the release Codex skills-only ZIP:
+  `dist/llmwiki-bridge-0.1.0-codex-skills.zip`.
+- ZIP SHA256:
+  `622DB83E37F57DB3C16569BA45254B1011822B30ED23B750CD72FE644C2CD7F7`.
+- Claude community marketplace form and OpenAI directory portal submission are
+  intentionally manual/pending and were not submitted for this release record.
