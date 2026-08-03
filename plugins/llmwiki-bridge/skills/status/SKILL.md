@@ -1,0 +1,56 @@
+---
+name: status
+description: Show read-only status for local llmwiki-serve sources and optional bridge-start handoff state without restarting processes.
+---
+
+# LLMWiki Bridge Status
+
+Use this skill when the user asks whether LLMWiki Bridge, local
+`llmwiki-serve` sources, or bridge-start handoff state are already present.
+
+This skill is read-only.
+
+## Do
+
+- Run `llmwiki-serve ls --json` when `llmwiki-serve` is available.
+- Use the result to distinguish healthy, stale, registered, and orphan local
+  source servers.
+- Report direct source MCP Streamable HTTP endpoints as
+  `http://127.0.0.1:<port>/mcp/stream` when the JSON contains a local URL.
+- Ask before running any `npx llmwiki-bridge-start@latest ...` command if that
+  command may download the package.
+- If approved and useful, run:
+
+```bash
+npx llmwiki-bridge-start@latest status --json
+```
+
+## Do Not
+
+- Do not restart existing `llmwiki-serve` servers.
+- Do not kill duplicate or stale processes unless the user explicitly asks for
+  cleanup.
+- Do not install packages from status. If a missing dependency must be
+  installed, switch to setup and ask for explicit approval first.
+- Do not run fixed-port scans or heuristic loopback scans.
+- Do not use `llmwiki-serve ls --probe-port` unless the user gives a specific
+  port to diagnose.
+- Do not run home-wide discovery from status; route the user to setup and ask
+  for explicit approval before any home scan.
+- Do not write Claude Code, Codex, MCP, bridge, or project configuration.
+- Do not modify, normalize, compile, or upload wiki files while checking
+  status.
+- Do not print private local roots in shared reports; redact them when writing
+  docs, issues, or public output.
+
+## Suggested Output
+
+Summarize:
+
+- source count
+- healthy source URLs
+- stale or duplicate notes
+- direct MCP Streamable HTTP URLs
+- whether `llmwiki-agent-bridge` appears reachable, if `bridge-start status`
+  was approved
+- next setup command only when the user asks to connect or repair a source

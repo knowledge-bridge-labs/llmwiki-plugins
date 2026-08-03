@@ -1,0 +1,30 @@
+{
+  "name": "knowledge-bridge-labs",
+  "description": "Knowledge Bridge Labs plugins for connecting coding agents to existing LLMWiki and Markdown knowledge sources.",
+  "owner": {
+    "name": "Knowledge Bridge Labs"
+  },
+  "plugins": [
+    {
+      "name": "llmwiki-bridge",
+      "source": "./plugins/llmwiki-bridge",
+      "description": "Guided skills for connecting Claude Code to existing LLMWiki, Markdown, or Obsidian knowledge through llmwiki-serve. llmwiki-agent-bridge is suggested only for multi-source or runtime-backed synthesis.",
+      "author": {
+        "name": "Knowledge Bridge Labs"
+      },
+      "homepage": "https://knowledge-bridge-labs.github.io/llmwiki-docs/",
+      "repository": "https://github.com/knowledge-bridge-labs/llmwiki-plugins",
+      "license": "Apache-2.0",
+      "keywords": [
+        "llmwiki",
+        "markdown",
+        "obsidian",
+        "agent-context",
+        "mcp",
+        "codex",
+        "claude-code"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

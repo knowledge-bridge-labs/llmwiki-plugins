@@ -1,0 +1,20 @@
+{
+  "name": "knowledge-bridge-labs",
+  "interface": {
+    "displayName": "Knowledge Bridge Labs"
+  },
+  "plugins": [
+    {
+      "name": "llmwiki-bridge",
+      "source": {
+        "source": "local",
+        "path": "./plugins/llmwiki-bridge"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

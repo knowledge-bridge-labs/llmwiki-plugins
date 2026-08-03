@@ -1,0 +1,23 @@
+{
+  "name": "llmwiki-bridge",
+  "displayName": "LLMWiki Bridge",
+  "version": "0.1.0",
+  "description": "Guided skills for connecting Claude Code to existing LLMWiki, Markdown, or Obsidian knowledge through llmwiki-serve.",
+  "author": {
+    "name": "Knowledge Bridge Labs",
+    "url": "https://github.com/knowledge-bridge-labs"
+  },
+  "homepage": "https://knowledge-bridge-labs.github.io/llmwiki-docs/",
+  "repository": "https://github.com/knowledge-bridge-labs/llmwiki-plugins",
+  "license": "Apache-2.0",
+  "keywords": [
+    "llmwiki",
+    "markdown",
+    "obsidian",
+    "agent-context",
+    "mcp",
+    "codex",
+    "claude-code"
+  ],
+  "skills": "./skills/"
+}
