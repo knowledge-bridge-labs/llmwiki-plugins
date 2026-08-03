@@ -1,12 +1,9 @@
 ---
 name: setup
-description: Set up a safe first connection from Claude Code or Codex to existing LLMWiki, Markdown, or Obsidian knowledge through llmwiki-serve.
+description: Safely set up LLMWiki Bridge by connecting Claude Code or Codex to an existing LLMWiki, Markdown, or Obsidian source through llmwiki-serve. Use when the user asks to set up, connect, add project or wiki context, configure MCP access, start a local source, or decide whether Agent Bridge is needed.
 ---
 
 # LLMWiki Bridge Setup
-
-Use this skill when the user wants to connect Claude Code or Codex to an
-existing LLMWiki, Markdown, or Obsidian-style knowledge source.
 
 Start every setup by giving this short explanation in your own words:
 

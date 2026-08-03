@@ -1,12 +1,9 @@
 ---
 name: status
-description: Show read-only status for local llmwiki-serve sources and optional bridge-start handoff state without restarting processes.
+description: Show read-only LLMWiki Bridge status for local llmwiki-serve sources and optional bridge-start handoff state. Use when the user asks what is running, whether sources are healthy, which MCP URLs exist, or whether bridge-start or Agent Bridge state is present without cleanup or restart.
 ---
 
 # LLMWiki Bridge Status
-
-Use this skill when the user asks whether LLMWiki Bridge, local
-`llmwiki-serve` sources, or bridge-start handoff state are already present.
 
 This skill is read-only.
 

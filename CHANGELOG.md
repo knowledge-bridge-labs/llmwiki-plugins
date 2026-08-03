@@ -10,6 +10,9 @@
   URLs and strengthened remote endpoint disclosure.
 - Added a tag/manual release host gate for current Claude Code and Codex CLI
   validation.
+- Added generated `agents/openai.yaml` metadata for the `setup`, `status`, and
+  `doctor` skills.
+- Added `skill-creator` quick validation to optional local validator gates.
 
 ## 0.1.0 - 2026-08-03
 

@@ -145,6 +145,7 @@ Use the llmwiki-bridge:doctor skill for a read-only readiness check.
 | `plugins/llmwiki-bridge/.claude-plugin/plugin.json` | Claude Code plugin manifest. |
 | `plugins/llmwiki-bridge/.codex-plugin/plugin.json` | Codex plugin manifest. |
 | `plugins/llmwiki-bridge/skills/` | Shared skills loaded by both hosts. |
+| `plugins/llmwiki-bridge/skills/*/agents/openai.yaml` | Codex skill-list metadata generated with the official skill-creator helper. |
 | `PRIVACY.md` | Privacy policy URL used by Codex listing metadata. |
 | `TERMS.md` | Terms of service URL used by Codex listing metadata. |
 | `scripts/validate_repo.py` | JSON, frontmatter, structure, and safety validation. |
@@ -166,8 +167,10 @@ Run optional host validators when the corresponding CLIs are available:
 py -3 scripts/run_optional_validators.py
 ```
 
-The optional validator script skips unavailable tools. It does not install
-Claude Code, Codex, Node, Python packages, or any LLMWiki runtime.
+The optional validator script also runs the official `skill-creator`
+`quick_validate.py` gate for `setup`, `status`, and `doctor` when that system
+skill is installed. It skips unavailable tools. It does not install Claude Code,
+Codex, Node, Python packages, or any LLMWiki runtime.
 
 Release host gates run separately on tags and manual dispatch. They install the
 current Claude Code and Codex CLIs, require Claude root and plugin validation,

@@ -17,7 +17,9 @@
 10. Add a tag/manual release host gate that installs current Claude Code and
     Codex CLIs, validates Claude root/plugin manifests, and smoke-tests Codex
     marketplace add/install/list in an isolated home.
-11. Commit the MVP on `feat/initial-plugin`.
+11. Generate `agents/openai.yaml` for each skill with the official
+    `skill-creator` helper and gate them through quick validation.
+12. Commit the MVP on `feat/initial-plugin`.
 
 ## Affected Files
 
@@ -26,6 +28,7 @@
 - `plugins/llmwiki-bridge/.claude-plugin/plugin.json`
 - `plugins/llmwiki-bridge/.codex-plugin/plugin.json`
 - `plugins/llmwiki-bridge/skills/*/SKILL.md`
+- `plugins/llmwiki-bridge/skills/*/agents/openai.yaml`
 - `scripts/validate_repo.py`
 - `scripts/run_optional_validators.py`
 - `.github/workflows/ci.yml`

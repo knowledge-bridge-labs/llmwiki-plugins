@@ -1,0 +1,4 @@
+interface:
+  display_name: "LLMWiki Bridge Status"
+  short_description: "Inspect running source status"
+  default_prompt: "Use $status to list existing llmwiki-serve sources and report direct MCP URLs without restarting anything."

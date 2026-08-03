@@ -1,0 +1,4 @@
+interface:
+  display_name: "LLMWiki Bridge Doctor"
+  short_description: "Diagnose LLMWiki readiness"
+  default_prompt: "Use $doctor to check LLMWiki Bridge prerequisites and explain the smallest read-only next action."

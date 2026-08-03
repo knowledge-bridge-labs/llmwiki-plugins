@@ -18,4 +18,8 @@
 - [x] Add Privacy and Terms documents for Codex listing metadata.
 - [x] Add release host gate workflow for current Claude Code and Codex CLIs.
 - [x] Clarify MCP endpoint derivation and remote endpoint disclosure.
+- [x] Generate `agents/openai.yaml` for setup, status, and doctor with the
+      official `skill-creator` helper.
+- [x] Add skill metadata and `quick_validate.py` checks to local validators and
+      docs.
 - [ ] Report remaining public-registration steps.

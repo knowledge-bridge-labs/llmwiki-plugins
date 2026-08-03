@@ -33,9 +33,9 @@
     "privacyPolicyURL": "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/knowledge-bridge-labs/llmwiki-plugins/blob/main/TERMS.md",
     "defaultPrompt": [
-      "Set up LLMWiki Bridge for this repo.",
-      "Check my LLMWiki source status.",
-      "Run an LLMWiki Bridge doctor check."
+      "Use the llmwiki-bridge:setup skill to connect ./wiki safely.",
+      "Use the llmwiki-bridge:status skill to inspect running llmwiki-serve sources without restarting them.",
+      "Use the llmwiki-bridge:doctor skill to run a read-only readiness check."
     ],
     "brandColor": "#2563EB"
   }

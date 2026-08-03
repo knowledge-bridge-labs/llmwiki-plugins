@@ -1,12 +1,9 @@
 ---
 name: doctor
-description: Run a read-only readiness check for LLMWiki Bridge prerequisites, local source discovery, and optional bridge reachability.
+description: Run a read-only LLMWiki Bridge readiness and troubleshooting check for prerequisites, local source discovery, and optional bridge reachability. Use when setup fails, sources are not found, MCP connection is unclear, or the user asks to diagnose LLMWiki Bridge before making changes.
 ---
 
 # LLMWiki Bridge Doctor
-
-Use this skill when the user asks why LLMWiki Bridge setup is not working or
-wants a readiness check before setup.
 
 Doctor is read-only by default. Ask before installing packages, starting
 processes, probing non-loopback URLs, or writing configuration.

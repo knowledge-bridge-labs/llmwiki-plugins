@@ -28,8 +28,11 @@ REQUIRED_FILES = [
     "plugins/llmwiki-bridge/.claude-plugin/plugin.json",
     "plugins/llmwiki-bridge/.codex-plugin/plugin.json",
     "plugins/llmwiki-bridge/skills/setup/SKILL.md",
+    "plugins/llmwiki-bridge/skills/setup/agents/openai.yaml",
     "plugins/llmwiki-bridge/skills/status/SKILL.md",
+    "plugins/llmwiki-bridge/skills/status/agents/openai.yaml",
     "plugins/llmwiki-bridge/skills/doctor/SKILL.md",
+    "plugins/llmwiki-bridge/skills/doctor/agents/openai.yaml",
     "specs/plugin-onboarding/spec.md",
     "specs/plugin-onboarding/plan.md",
     "specs/plugin-onboarding/tasks.md",
@@ -127,6 +130,9 @@ def assert_plugin_manifests() -> None:
     prompts = interface.get("defaultPrompt")
     if not isinstance(prompts, list) or not 1 <= len(prompts) <= 3:
         fail("Codex defaultPrompt must be a list of one to three prompts")
+    for skill_name in ["llmwiki-bridge:setup", "llmwiki-bridge:status", "llmwiki-bridge:doctor"]:
+        if not any(isinstance(prompt, str) and skill_name in prompt for prompt in prompts):
+            fail(f"Codex defaultPrompt must include {skill_name}")
     if "version" in claude:
         fail("Claude manifest must omit fixed version for git-SHA marketplace updates")
     if "displayName" in claude:
@@ -184,6 +190,34 @@ def assert_skills() -> None:
                 fail(f"{path.relative_to(ROOT)} must mention {term!r}")
 
 
+def assert_skill_openai_metadata() -> None:
+    expected = {
+        "setup": {
+            "display_name": "LLMWiki Bridge Setup",
+            "short_description": "Connect a wiki source safely",
+            "default_prompt": "Use $setup ",
+        },
+        "status": {
+            "display_name": "LLMWiki Bridge Status",
+            "short_description": "Inspect running source status",
+            "default_prompt": "Use $status ",
+        },
+        "doctor": {
+            "display_name": "LLMWiki Bridge Doctor",
+            "short_description": "Diagnose LLMWiki readiness",
+            "default_prompt": "Use $doctor ",
+        },
+    }
+    for name, fields in expected.items():
+        path = SKILLS / name / "agents" / "openai.yaml"
+        text = path.read_text(encoding="utf-8")
+        if not text.startswith("interface:\n"):
+            fail(f"{path.relative_to(ROOT)} must start with interface metadata")
+        for key, value in fields.items():
+            if f'{key}: "{value}' not in text:
+                fail(f"{path.relative_to(ROOT)} must include {key} matching {value!r}")
+
+
 def assert_no_forbidden_components() -> None:
     forbidden_names = {"lb", "lb.cmd", "lb.ps1", "lb.sh", "hooks.json", ".mcp.json", ".app.json"}
     found = []
@@ -225,6 +259,7 @@ def main() -> None:
     assert_codex_marketplace()
     assert_plugin_manifests()
     assert_skills()
+    assert_skill_openai_metadata()
     assert_no_forbidden_components()
     assert_no_sensitive_literals()
     print("Repository validation passed.")
