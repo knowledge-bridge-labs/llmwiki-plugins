@@ -67,7 +67,8 @@ configuration until the user has explicitly approved that step.
 This repository is a Claude Code marketplace because it contains
 `.claude-plugin/marketplace.json` at the repository root.
 
-Local test:
+Run slash commands inside an active Claude Code session. For local testing from
+this repository:
 
 ```text
 /plugin marketplace add ./llmwiki-plugins
@@ -76,22 +77,58 @@ Local test:
 /llmwiki-bridge:setup
 ```
 
-Public GitHub distribution:
+For public GitHub distribution from inside an active Claude Code session:
 
 ```text
 /plugin marketplace add knowledge-bridge-labs/llmwiki-plugins
 /plugin install llmwiki-bridge@knowledge-bridge-labs
 /reload-plugins
+/llmwiki-bridge:setup
 ```
 
-Claude Code plugin skills are namespaced by plugin ID. Do not document or
-create a bare `/setup` or `/lb` command for this plugin.
+Use `/reload-plugins` only to activate the plugin in an already-running Claude
+Code session. If you install from the shell before starting Claude Code, start a
+new Claude Code session instead; no reload is needed.
+
+Shell alternative for user-scope installation:
+
+```bash
+claude plugin marketplace add --scope user knowledge-bridge-labs/llmwiki-plugins
+claude plugin install --scope user llmwiki-bridge@knowledge-bridge-labs
+```
+
+To update from inside an active Claude Code session:
+
+```text
+/plugin marketplace update knowledge-bridge-labs
+/plugin update llmwiki-bridge@knowledge-bridge-labs
+/reload-plugins
+```
+
+Shell update alternative:
+
+```bash
+claude plugin marketplace update knowledge-bridge-labs
+claude plugin update --scope user llmwiki-bridge@knowledge-bridge-labs
+```
+
+Start a new Claude Code session after shell updates, or run `/reload-plugins`
+in an already-running session. Claude Code plugin skills are namespaced by
+plugin ID. Do not document or create a bare `/setup` or `/lb` command for this
+plugin.
+
+Reference: Claude Code plugin discovery, marketplace, and command details are
+documented in the [plugin discovery guide](https://code.claude.com/docs/en/discover-plugins),
+[marketplace guide](https://code.claude.com/docs/en/plugin-marketplaces), and
+[plugins reference](https://code.claude.com/docs/en/plugins-reference).
 
 ## Codex Marketplace
 
 This repository is also a Codex plugin marketplace because it contains
 `.agents/plugins/marketplace.json` at the repository root. The Codex marketplace
 entry points at the same plugin folder as Claude Code.
+
+Codex plugin installation requires Codex CLI 0.146.0 or newer.
 
 Local test:
 
@@ -109,6 +146,28 @@ codex plugin add llmwiki-bridge@knowledge-bridge-labs
 
 After installation, start a new Codex thread so newly installed skills are
 loaded in context.
+
+Codex updates are a marketplace refresh only:
+
+```bash
+codex plugin marketplace upgrade knowledge-bridge-labs
+```
+
+Then start a new Codex CLI session or chat so the refreshed snapshot is loaded.
+
+After registering the marketplace, the interactive plugin browser is also
+available:
+
+```text
+codex
+/plugins
+```
+
+Reference: OpenAI documents Codex marketplace installation in the
+[plugin packaging guide](https://developers.openai.com/plugins/build/plugins#add-a-marketplace-from-the-cli),
+[Codex plugin marketplace command reference](https://learn.chatgpt.com/docs/developer-commands#codex-plugin-marketplace),
+[Codex plugin command reference](https://learn.chatgpt.com/docs/developer-commands#codex-plugin),
+and [Codex plugin directory guide](https://learn.chatgpt.com/docs/plugins#plugin-directory-in-codex-cli).
 
 Codex can use the plugin through normal natural language:
 
