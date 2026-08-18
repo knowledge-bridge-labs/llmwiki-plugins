@@ -59,6 +59,11 @@ llmwiki-serve serve ./wiki --host 127.0.0.1 --port 8765
 llmwiki-serve ls --json
 ```
 
+SQLite GraphStore is configured on the `llmwiki-serve` process, not in this
+plugin. In `llmwiki-serve` 0.2.10 and newer, the base serve package includes
+the built-in SQLite GraphStore, it remains off by default, and no `[sqlite]`,
+`[graph]`, bridge, or chat extra is required.
+
 Do not run commands that install packages, start processes, or write client
 configuration until the user has explicitly approved that step.
 
